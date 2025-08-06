@@ -273,26 +273,50 @@ function App() {
             </button>
             
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <div className="text-2xl mb-2">💰</div>
-                <h4 className="font-medium text-blue-900">Revenue Analytics</h4>
-                <p className="text-sm text-blue-700">Track subscription & usage revenue</p>
-              </div>
-              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <div className="text-2xl mb-2">👥</div>
-                <h4 className="font-medium text-green-900">Customer Insights</h4>
-                <p className="text-sm text-green-700">Industry & regional breakdown</p>
-              </div>
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <div className="text-2xl mb-2">📈</div>
-                <h4 className="font-medium text-purple-900">Performance Metrics</h4>
-                <p className="text-sm text-purple-700">Employee & team analytics</p>
-              </div>
-              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                <div className="text-2xl mb-2">🌍</div>
-                <h4 className="font-medium text-orange-900">Geographic Sales</h4>
-                <p className="text-sm text-orange-700">Global revenue distribution</p>
-              </div>
+              <button
+                onClick={() => setCurrentView('revenue-chart')}
+                className="bg-blue-50 p-4 rounded-lg border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 cursor-pointer group text-left"
+              >
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">💰</div>
+                <h4 className="font-medium text-blue-900 group-hover:text-blue-700">Revenue Analytics</h4>
+                <p className="text-sm text-blue-700 group-hover:text-blue-600">Track subscription & usage revenue</p>
+                <p className="text-xs text-blue-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view demo →
+                </p>
+              </button>
+              <button
+                onClick={() => setCurrentView('customer-pie')}
+                className="bg-green-50 p-4 rounded-lg border border-green-200 hover:bg-green-100 hover:border-green-300 transition-all duration-200 cursor-pointer group text-left"
+              >
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">👥</div>
+                <h4 className="font-medium text-green-900 group-hover:text-green-700">Customer Insights</h4>
+                <p className="text-sm text-green-700 group-hover:text-green-600">Industry & regional breakdown</p>
+                <p className="text-xs text-green-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view demo →
+                </p>
+              </button>
+              <button
+                onClick={() => setCurrentView('performance-scatter')}
+                className="bg-purple-50 p-4 rounded-lg border border-purple-200 hover:bg-purple-100 hover:border-purple-300 transition-all duration-200 cursor-pointer group text-left"
+              >
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">📈</div>
+                <h4 className="font-medium text-purple-900 group-hover:text-purple-700">Performance Metrics</h4>
+                <p className="text-sm text-purple-700 group-hover:text-purple-600">Employee & team analytics</p>
+                <p className="text-xs text-purple-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view demo →
+                </p>
+              </button>
+              <button
+                onClick={() => setCurrentView('geographic-heatmap')}
+                className="bg-orange-50 p-4 rounded-lg border border-orange-200 hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 cursor-pointer group text-left"
+              >
+                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">🌍</div>
+                <h4 className="font-medium text-orange-900 group-hover:text-orange-700">Geographic Sales</h4>
+                <p className="text-sm text-orange-700 group-hover:text-orange-600">Global revenue distribution</p>
+                <p className="text-xs text-orange-600 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to view demo →
+                </p>
+              </button>
             </div>
           </div>
         ) : (
@@ -331,75 +355,95 @@ function App() {
               </div>
             </div>
 
-            {/* 2x2 Chart Grid */}
+            {/* 2x2 Chart Grid - Clickable Tiles */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+              {/* Revenue Trends Tile */}
+              <button
+                onClick={() => setCurrentView('revenue-chart')}
+                className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500 text-left hover:shadow-xl hover:scale-105 transform transition-all duration-200 cursor-pointer group"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Revenue Trends</h3>
-                  <span className="text-2xl">💰</span>
+                  <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">Revenue Trends</h3>
+                  <span className="text-2xl group-hover:scale-110 transition-transform">💰</span>
                 </div>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors">
                   <div className="text-center">
-                    <div className="text-4xl mb-2 opacity-50">💰</div>
-                    <p className="text-gray-500 text-sm">Monthly revenue by subscription & usage</p>
-                    <p className="text-gray-400 text-xs mt-1">Chart will render here</p>
+                    <div className="text-4xl mb-2 opacity-50 group-hover:opacity-70 transition-opacity">💰</div>
+                    <p className="text-gray-500 text-sm group-hover:text-blue-600">Monthly revenue by subscription & usage</p>
+                    <p className="text-gray-400 text-xs mt-1 group-hover:text-blue-500">Click to view interactive chart</p>
                   </div>
                 </div>
-                <div className="mt-4 text-xs text-gray-500">
-                  Interactive visualization coming in Phase 3
+                <div className="mt-4 text-xs text-gray-500 group-hover:text-blue-600 transition-colors flex items-center">
+                  <span>📊 Interactive Revenue Chart</span>
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
-              </div>
+              </button>
               
-              <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500">
+              {/* Customer Distribution Tile */}
+              <button
+                onClick={() => setCurrentView('customer-pie')}
+                className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500 text-left hover:shadow-xl hover:scale-105 transform transition-all duration-200 cursor-pointer group"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Customer Distribution</h3>
-                  <span className="text-2xl">👥</span>
+                  <h3 className="text-lg font-semibold text-gray-800 group-hover:text-green-600">Customer Distribution</h3>
+                  <span className="text-2xl group-hover:scale-110 transition-transform">👥</span>
                 </div>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-green-50 transition-colors">
                   <div className="text-center">
-                    <div className="text-4xl mb-2 opacity-50">👥</div>
-                    <p className="text-gray-500 text-sm">Customer segments by industry & region</p>
-                    <p className="text-gray-400 text-xs mt-1">Chart will render here</p>
+                    <div className="text-4xl mb-2 opacity-50 group-hover:opacity-70 transition-opacity">👥</div>
+                    <p className="text-gray-500 text-sm group-hover:text-green-600">Customer segments by industry & region</p>
+                    <p className="text-gray-400 text-xs mt-1 group-hover:text-green-500">Click to view interactive chart</p>
                   </div>
                 </div>
-                <div className="mt-4 text-xs text-gray-500">
-                  Interactive visualization coming in Phase 3
+                <div className="mt-4 text-xs text-gray-500 group-hover:text-green-600 transition-colors flex items-center">
+                  <span>🥧 Interactive Pie Chart with Drill-down</span>
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
-              </div>
+              </button>
               
-              <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-500">
+              {/* Performance Analytics Tile */}
+              <button
+                onClick={() => setCurrentView('performance-scatter')}
+                className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-500 text-left hover:shadow-xl hover:scale-105 transform transition-all duration-200 cursor-pointer group"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Performance Analytics</h3>
-                  <span className="text-2xl">📈</span>
+                  <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-600">Performance Analytics</h3>
+                  <span className="text-2xl group-hover:scale-110 transition-transform">📈</span>
                 </div>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-purple-50 transition-colors">
                   <div className="text-center">
-                    <div className="text-4xl mb-2 opacity-50">📈</div>
-                    <p className="text-gray-500 text-sm">Employee performance correlation analysis</p>
-                    <p className="text-gray-400 text-xs mt-1">Chart will render here</p>
+                    <div className="text-4xl mb-2 opacity-50 group-hover:opacity-70 transition-opacity">📈</div>
+                    <p className="text-gray-500 text-sm group-hover:text-purple-600">Employee performance correlation analysis</p>
+                    <p className="text-gray-400 text-xs mt-1 group-hover:text-purple-500">Click to view interactive chart</p>
                   </div>
                 </div>
-                <div className="mt-4 text-xs text-gray-500">
-                  Interactive visualization coming in Phase 3
+                <div className="mt-4 text-xs text-gray-500 group-hover:text-purple-600 transition-colors flex items-center">
+                  <span>📊 Interactive Scatter Plot with Bubble Size</span>
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
-              </div>
+              </button>
               
-              <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-orange-500">
+              {/* Geographic Revenue Tile */}
+              <button
+                onClick={() => setCurrentView('geographic-heatmap')}
+                className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-orange-500 text-left hover:shadow-xl hover:scale-105 transform transition-all duration-200 cursor-pointer group"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Geographic Revenue</h3>
-                  <span className="text-2xl">🌍</span>
+                  <h3 className="text-lg font-semibold text-gray-800 group-hover:text-orange-600">Geographic Revenue</h3>
+                  <span className="text-2xl group-hover:scale-110 transition-transform">🌍</span>
                 </div>
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-orange-50 transition-colors">
                   <div className="text-center">
-                    <div className="text-4xl mb-2 opacity-50">🌍</div>
-                    <p className="text-gray-500 text-sm">Global sales heat map with growth rates</p>
-                    <p className="text-gray-400 text-xs mt-1">Chart will render here</p>
+                    <div className="text-4xl mb-2 opacity-50 group-hover:opacity-70 transition-opacity">🌍</div>
+                    <p className="text-gray-500 text-sm group-hover:text-orange-600">Global sales heat map with growth rates</p>
+                    <p className="text-gray-400 text-xs mt-1 group-hover:text-orange-500">Click to view interactive chart</p>
                   </div>
                 </div>
-                <div className="mt-4 text-xs text-gray-500">
-                  Interactive visualization coming in Phase 3
+                <div className="mt-4 text-xs text-gray-500 group-hover:text-orange-600 transition-colors flex items-center">
+                  <span>🌍 Interactive World Map with Animation</span>
+                  <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
-              </div>
+              </button>
             </div>
 
             {/* Data Actions Panel */}
