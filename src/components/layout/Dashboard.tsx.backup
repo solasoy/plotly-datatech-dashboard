@@ -1,0 +1,241 @@
+import React, { useState } from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import { DashboardDatasets } from '../../types/dashboard.types';
+
+interface DashboardProps {
+  datasets: DashboardDatasets;
+  importState: {
+    hasData: boolean;
+    recordCounts: {
+      revenue: number;
+      customer: number;
+      performance: number;
+      geographic: number;
+    };
+    lastImported: Date | null;
+  };
+  onShowImport: () => void;
+  onShowPython: () => void;
+  showPython: boolean;
+  children?: React.ReactNode;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({
+  datasets,
+  importState,
+  onShowImport,
+  onShowPython,
+  showPython,
+  children
+}) => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // Chart placeholder components (will be replaced with actual charts in Phase 3)
+  const ChartPlaceholder: React.FC<{ 
+    title: string; 
+    icon: string; 
+    color: string;
+    description: string;
+  }> = ({ title, icon, color, description }) => {
+    const borderColorClass = {
+      blue: 'border-blue-500',
+      green: 'border-green-500', 
+      purple: 'border-purple-500',
+      orange: 'border-orange-500'
+    }[color] || 'border-gray-500';
+
+    return (
+    <div className={`bg-white rounded-lg shadow-lg p-6 border-l-4 ${borderColorClass}`}>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <span className="text-2xl">{icon}</span>
+      </div>
+      <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-2 opacity-50">{icon}</div>
+          <p className="text-gray-500 text-sm">{description}</p>
+          <p className="text-gray-400 text-xs mt-1">Chart will render here</p>
+        </div>
+      </div>
+      <div className="mt-4 text-xs text-gray-500">
+        Interactive visualization coming in Phase 3
+      </div>
+    </div>
+    );
+  };
+
+  const totalRecords = importState.recordCounts.revenue + 
+                      importState.recordCounts.customer + 
+                      importState.recordCounts.performance + 
+                      importState.recordCounts.geographic;
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header 
+        importState={importState}
+        onShowImport={onShowImport}
+        onShowPython={onShowPython}
+        showPython={showPython}
+        onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        sidebarOpen={sidebarOpen}
+      />
+      
+      <div className="flex">
+        {sidebarOpen && (
+          <Sidebar 
+            isOpen={sidebarOpen}
+            datasets={datasets}
+            importState={importState}
+            onClose={() => setSidebarOpen(false)}
+          />
+        )}
+        
+        <main className="flex-1 overflow-auto">
+          <div className="p-6">
+            {!importState.hasData ? (
+              // No data state
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+                  <div className="text-6xl mb-6">📊</div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                    Welcome to DataTech Dashboard
+                  </h2>
+                  <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                    Import your Excel data to begin exploring interactive visualizations. 
+                    Your dashboard will display revenue trends, customer analytics, 
+                    performance metrics, and geographic insights.
+                  </p>
+                  <button
+                    onClick={onShowImport}
+                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                  >
+                    📁 Import Excel Data
+                  </button>
+                  
+                  <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <div className="text-2xl mb-2">💰</div>
+                      <h4 className="font-medium text-blue-900">Revenue Analytics</h4>
+                      <p className="text-sm text-blue-700">Track subscription & usage revenue</p>
+                    </div>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <div className="text-2xl mb-2">👥</div>
+                      <h4 className="font-medium text-green-900">Customer Insights</h4>
+                      <p className="text-sm text-green-700">Industry & regional breakdown</p>
+                    </div>
+                    <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                      <div className="text-2xl mb-2">📈</div>
+                      <h4 className="font-medium text-purple-900">Performance Metrics</h4>
+                      <p className="text-sm text-purple-700">Employee & team analytics</p>
+                    </div>
+                    <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                      <div className="text-2xl mb-2">🌍</div>
+                      <h4 className="font-medium text-orange-900">Geographic Sales</h4>
+                      <p className="text-sm text-orange-700">Global revenue distribution</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : showPython ? (
+              // Python panel is shown - render children (which contains the split layout)
+              children
+            ) : (
+              // Dashboard with data - 2x2 grid layout
+              <div className="space-y-6">
+                {/* Dashboard Stats Header */}
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Dashboard Overview</h2>
+                      <p className="text-gray-600 mt-1">
+                        {totalRecords.toLocaleString()} total records • Last updated: {importState.lastImported?.toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-6 text-sm">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                          <span className="text-gray-600">Revenue: {importState.recordCounts.revenue}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                          <span className="text-gray-600">Customers: {importState.recordCounts.customer}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                          <span className="text-gray-600">Performance: {importState.recordCounts.performance}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                          <span className="text-gray-600">Geographic: {importState.recordCounts.geographic}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2x2 Chart Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <ChartPlaceholder
+                    title="Revenue Trends"
+                    icon="💰"
+                    color="blue"
+                    description="Monthly revenue by subscription & usage"
+                  />
+                  
+                  <ChartPlaceholder
+                    title="Customer Distribution"
+                    icon="👥"
+                    color="green"
+                    description="Customer segments by industry & region"
+                  />
+                  
+                  <ChartPlaceholder
+                    title="Performance Analytics"
+                    icon="📈"
+                    color="purple"
+                    description="Employee performance correlation analysis"
+                  />
+                  
+                  <ChartPlaceholder
+                    title="Geographic Revenue"
+                    icon="🌍"
+                    color="orange"
+                    description="Global sales heat map with growth rates"
+                  />
+                </div>
+
+                {/* Data Actions Panel */}
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">Data Actions</h3>
+                      <p className="text-gray-600 text-sm">Analyze and transform your dashboard data</p>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <button
+                        onClick={onShowPython}
+                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium"
+                      >
+                        🐍 Open Python Analysis
+                      </button>
+                      <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                        📊 View Data Tables
+                      </button>
+                      <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium">
+                        📤 Export Dashboard
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
