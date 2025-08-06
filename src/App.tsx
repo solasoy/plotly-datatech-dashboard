@@ -239,7 +239,7 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         {/* Render different views based on currentView */}
         {currentView === 'revenue-chart' ? (
           <RevenueChartDemo />
@@ -255,8 +255,8 @@ function App() {
           <EnhancedStateDemo />
         ) : !importState.hasData ? (
           // No data state
-          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
-            <div className="text-6xl mb-6">📊</div>
+          <div className="bg-white rounded-lg shadow-lg p-8 text-center">
+            <div className="text-6xl mb-4">📊</div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Welcome to DataTech Dashboard
             </h2>
