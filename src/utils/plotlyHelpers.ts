@@ -137,6 +137,20 @@ export const colorPalettes = {
     '#eab308', // yellow-500
     '#f59e0b', // amber-500
     '#ef4444', // red-500
+  ],
+  categorical: [
+    '#2563eb', // blue-600
+    '#059669', // emerald-600
+    '#dc2626', // red-600
+    '#ca8a04', // yellow-600
+    '#9333ea', // purple-600
+    '#c2410c', // orange-600
+    '#0891b2', // cyan-600
+    '#be123c', // rose-600
+    '#4f46e5', // indigo-600
+    '#0d9488', // teal-600
+    '#7c2d12', // amber-800
+    '#1e40af', // blue-800
     '#a855f7'  // purple-500
   ]
 };

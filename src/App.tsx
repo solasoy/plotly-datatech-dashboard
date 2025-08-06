@@ -3,6 +3,9 @@ import PythonPanel from './components/python/PythonPanel';
 import ExcelImport from './components/data/ExcelImport';
 import DataTables from './components/data/DataTables';
 import { RevenueChartDemo } from './components/charts/RevenueChartDemo';
+import { CustomerPieChartDemo } from './components/charts/CustomerPieChartDemo';
+import { PerformanceScatterDemo } from './components/charts/PerformanceScatterDemo';
+import { GeographicHeatmapDemo } from './components/charts/GeographicHeatmapDemo';
 import { ControlPanelDemo } from './components/controls/ControlPanelDemo';
 import { EnhancedStateDemo } from './components/controls/EnhancedStateDemo';
 import { useDashboard } from './hooks/useDashboard';
@@ -18,7 +21,7 @@ function App() {
   const [showPython, setShowPython] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'revenue-chart' | 'controls' | 'state-management'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'revenue-chart' | 'customer-pie' | 'performance-scatter' | 'geographic-heatmap' | 'controls' | 'state-management'>('dashboard');
 
   const handleDataLoaded = (excelData: ExcelDatasets) => {
     loadData(excelData);
@@ -167,6 +170,36 @@ function App() {
                   📊 Revenue Chart
                 </button>
                 <button
+                  onClick={() => setCurrentView('customer-pie')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'customer-pie'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🥧 Customer Pie
+                </button>
+                <button
+                  onClick={() => setCurrentView('performance-scatter')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'performance-scatter'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  📊 Performance
+                </button>
+                <button
+                  onClick={() => setCurrentView('geographic-heatmap')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'geographic-heatmap'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🌍 Geographic
+                </button>
+                <button
                   onClick={() => setCurrentView('controls')}
                   className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
                     currentView === 'controls'
@@ -210,6 +243,12 @@ function App() {
         {/* Render different views based on currentView */}
         {currentView === 'revenue-chart' ? (
           <RevenueChartDemo />
+        ) : currentView === 'customer-pie' ? (
+          <CustomerPieChartDemo />
+        ) : currentView === 'performance-scatter' ? (
+          <PerformanceScatterDemo />
+        ) : currentView === 'geographic-heatmap' ? (
+          <GeographicHeatmapDemo />
         ) : currentView === 'controls' ? (
           <ControlPanelDemo />
         ) : currentView === 'state-management' ? (

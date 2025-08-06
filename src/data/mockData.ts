@@ -145,21 +145,21 @@ export const generatePerformanceData = (): PerformanceData[] => {
 // Generate geographic data for 15 countries
 export const generateGeographicData = (): GeographicData[] => {
   const countries = [
-    { country: 'United States', country_code: 'US', latitude: 39.8283, longitude: -98.5795 },
-    { country: 'Canada', country_code: 'CA', latitude: 56.1304, longitude: -106.3468 },
-    { country: 'United Kingdom', country_code: 'GB', latitude: 55.3781, longitude: -3.4360 },
-    { country: 'Germany', country_code: 'DE', latitude: 51.1657, longitude: 10.4515 },
-    { country: 'France', country_code: 'FR', latitude: 46.2276, longitude: 2.2137 },
-    { country: 'Japan', country_code: 'JP', latitude: 36.2048, longitude: 138.2529 },
-    { country: 'Australia', country_code: 'AU', latitude: -25.2744, longitude: 133.7751 },
-    { country: 'Singapore', country_code: 'SG', latitude: 1.3521, longitude: 103.8198 },
-    { country: 'Brazil', country_code: 'BR', latitude: -14.2350, longitude: -51.9253 },
-    { country: 'Mexico', country_code: 'MX', latitude: 23.6345, longitude: -102.5528 },
-    { country: 'India', country_code: 'IN', latitude: 20.5937, longitude: 78.9629 },
-    { country: 'South Korea', country_code: 'KR', latitude: 35.9078, longitude: 127.7669 },
-    { country: 'Netherlands', country_code: 'NL', latitude: 52.1326, longitude: 5.2913 },
-    { country: 'Spain', country_code: 'ES', latitude: 40.4637, longitude: -3.7492 },
-    { country: 'Sweden', country_code: 'SE', latitude: 60.1282, longitude: 18.6435 }
+    { country: 'United States', country_code: 'USA', latitude: 39.8283, longitude: -98.5795 },
+    { country: 'Canada', country_code: 'CAN', latitude: 56.1304, longitude: -106.3468 },
+    { country: 'United Kingdom', country_code: 'GBR', latitude: 55.3781, longitude: -3.4360 },
+    { country: 'Germany', country_code: 'DEU', latitude: 51.1657, longitude: 10.4515 },
+    { country: 'France', country_code: 'FRA', latitude: 46.2276, longitude: 2.2137 },
+    { country: 'Japan', country_code: 'JPN', latitude: 36.2048, longitude: 138.2529 },
+    { country: 'Australia', country_code: 'AUS', latitude: -25.2744, longitude: 133.7751 },
+    { country: 'Singapore', country_code: 'SGP', latitude: 1.3521, longitude: 103.8198 },
+    { country: 'Brazil', country_code: 'BRA', latitude: -14.2350, longitude: -51.9253 },
+    { country: 'Mexico', country_code: 'MEX', latitude: 23.6345, longitude: -102.5528 },
+    { country: 'India', country_code: 'IND', latitude: 20.5937, longitude: 78.9629 },
+    { country: 'South Korea', country_code: 'KOR', latitude: 35.9078, longitude: 127.7669 },
+    { country: 'Netherlands', country_code: 'NLD', latitude: 52.1326, longitude: 5.2913 },
+    { country: 'Spain', country_code: 'ESP', latitude: 40.4637, longitude: -3.7492 },
+    { country: 'Sweden', country_code: 'SWE', latitude: 60.1282, longitude: 18.6435 }
   ];
   
   return countries.map(countryInfo => {
@@ -178,7 +178,7 @@ export const generateGeographicData = (): GeographicData[] => {
       q3_2023_revenue,
       q4_2023_revenue,
       customer_count: Math.floor(baseRevenue / (800 + Math.random() * 400)),
-      growth_rate: Math.round(growthTrend * 1000) / 10 // One decimal place
+      growth_rate: Math.round(growthTrend * 1000) / 1000 // Convert to decimal (e.g., 0.15 for 15%)
     };
   });
 };
