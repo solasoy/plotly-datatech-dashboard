@@ -110,32 +110,41 @@ export const useDashboard = (): UseDashboardReturn => {
 
   // Load data from Excel import
   const loadData = useCallback((excelData: ExcelDatasets) => {
+    console.log('🔄 useDashboard.loadData called');
+    console.log('  Input data:', {
+      revenue: excelData.revenueData?.length || 0,
+      customer: excelData.customerData?.length || 0,
+      performance: excelData.performanceData?.length || 0,
+      geographic: excelData.geographicData?.length || 0
+    });
+    
     const newDatasets: DashboardDatasets = {
-      revenue: excelData.revenueData,
-      customer: excelData.customerData,
-      performance: excelData.performanceData,
-      geographic: excelData.geographicData
+      revenue: excelData.revenueData || [],
+      customer: excelData.customerData || [],
+      performance: excelData.performanceData || [],
+      geographic: excelData.geographicData || []
     };
 
     setDatasets(newDatasets);
-    setImportState({
+    
+    const newImportState = {
       isImporting: false,
       hasData: true,
       error: null,
       lastImported: new Date(),
       recordCounts: {
-        revenue: excelData.revenueData.length,
-        customer: excelData.customerData.length,
-        performance: excelData.performanceData.length,
-        geographic: excelData.geographicData.length
+        revenue: excelData.revenueData?.length || 0,
+        customer: excelData.customerData?.length || 0,
+        performance: excelData.performanceData?.length || 0,
+        geographic: excelData.geographicData?.length || 0
       }
-    });
-
-    console.log('Dashboard data loaded:', {
-      revenue: excelData.revenueData.length,
-      customer: excelData.customerData.length,
-      performance: excelData.performanceData.length,
-      geographic: excelData.geographicData.length
+    };
+    
+    setImportState(newImportState);
+    
+    console.log('✅ Data loaded into state:', {
+      datasets: newDatasets,
+      importState: newImportState
     });
   }, []);
 
@@ -226,10 +235,16 @@ export const useDashboard = (): UseDashboardReturn => {
 
   // Apply filters to get filtered datasets
   const filteredData: DashboardDatasets = useMemo(() => {
-    const filtered: DashboardDatasets = { ...datasets };
+    // Start with a deep copy of the datasets to avoid mutating the original
+    const filtered: DashboardDatasets = {
+      revenue: [...(datasets.revenue || [])],
+      customer: [...(datasets.customer || [])],
+      performance: [...(datasets.performance || [])],
+      geographic: [...(datasets.geographic || [])]
+    };
 
     // Apply department filter
-    if (dashboardState.selectedDepartment !== 'all') {
+    if (dashboardState.selectedDepartment !== 'all' && dashboardState.selectedDepartment) {
       filtered.revenue = filtered.revenue.filter(d => 
         d.department === dashboardState.selectedDepartment
       );
@@ -239,7 +254,7 @@ export const useDashboard = (): UseDashboardReturn => {
     }
 
     // Apply region filter
-    if (dashboardState.selectedRegion !== 'all') {
+    if (dashboardState.selectedRegion !== 'all' && dashboardState.selectedRegion) {
       filtered.revenue = filtered.revenue.filter(d => 
         d.region === dashboardState.selectedRegion
       );
@@ -249,20 +264,27 @@ export const useDashboard = (): UseDashboardReturn => {
     }
 
     // Apply industry filter
-    if (dashboardState.selectedIndustry !== 'all') {
+    if (dashboardState.selectedIndustry !== 'all' && dashboardState.selectedIndustry) {
       filtered.customer = filtered.customer.filter(d => 
         d.industry === dashboardState.selectedIndustry
       );
     }
 
     // Apply time range filter (for revenue data)
-    if (dashboardState.selectedTimeRange !== 'All Time') {
+    if (dashboardState.selectedTimeRange !== 'All Time' && filtered.revenue.length > 0) {
       const monthsToInclude = dashboardState.selectedTimeRange === '6M' ? 6 : 
                             dashboardState.selectedTimeRange === '1Y' ? 12 : 24;
       
       // This is a simplified time filter - in reality you'd parse dates properly
       filtered.revenue = filtered.revenue.slice(-monthsToInclude);
     }
+
+    console.log('Filtered data computed:', {
+      revenue: filtered.revenue.length,
+      customer: filtered.customer.length,
+      performance: filtered.performance.length,
+      geographic: filtered.geographic.length
+    });
 
     return filtered;
   }, [datasets, dashboardState]);

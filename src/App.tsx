@@ -15,6 +15,7 @@ function App() {
   const { 
     importState, 
     filteredData,
+    datasets,  // Add this to get raw datasets
     loadData
   } = useDashboard();
   
@@ -24,6 +25,12 @@ function App() {
   const [currentView, setCurrentView] = useState<'dashboard' | 'revenue-chart' | 'customer-pie' | 'performance-scatter' | 'geographic-heatmap' | 'controls' | 'state-management'>('dashboard');
 
   const handleDataLoaded = (excelData: ExcelDatasets) => {
+    console.log('📥 handleDataLoaded called with:', {
+      revenue: excelData.revenueData?.length || 0,
+      customer: excelData.customerData?.length || 0,
+      performance: excelData.performanceData?.length || 0,
+      geographic: excelData.geographicData?.length || 0
+    });
     loadData(excelData);
     setShowImport(false);
     setImportError(null);
@@ -34,8 +41,19 @@ function App() {
   };
 
   // Convert filtered data to format Python panel expects
-  const pythonData = [...filteredData.revenue, ...filteredData.customer, 
-                      ...filteredData.performance, ...filteredData.geographic];
+  const pythonData = [
+    ...(filteredData.revenue || []), 
+    ...(filteredData.customer || []), 
+    ...(filteredData.performance || []), 
+    ...(filteredData.geographic || [])
+  ];
+  
+  // Debug: Log python data status
+  console.log('PythonData prepared:', {
+    length: pythonData.length,
+    hasData: pythonData.length > 0,
+    sample: pythonData[0]
+  });
 
   // Show Excel import modal overlay
   if (showImport) {
@@ -92,6 +110,37 @@ function App() {
 
   // Show Python split view
   if (showPython) {
+    // Debug logging
+    const rawCounts = {
+      revenue: datasets?.revenue?.length || 0,
+      customer: datasets?.customer?.length || 0,
+      performance: datasets?.performance?.length || 0,
+      geographic: datasets?.geographic?.length || 0
+    };
+    
+    const filteredCounts = {
+      revenue: filteredData.revenue?.length || 0,
+      customer: filteredData.customer?.length || 0,
+      performance: filteredData.performance?.length || 0,
+      geographic: filteredData.geographic?.length || 0
+    };
+    
+    console.log('=== DATA DEBUG ===');
+    console.log('Raw datasets:', rawCounts);
+    console.log('Filtered data:', filteredCounts);
+    console.log('Python data array length:', pythonData.length);
+    console.log('ImportState.hasData:', importState.hasData);
+    console.log('ImportState.recordCounts:', importState.recordCounts);
+    
+    if (pythonData.length === 0) {
+      console.warn('⚠️ NO DATA being sent to Python panel!');
+      if (rawCounts.revenue + rawCounts.customer + rawCounts.performance + rawCounts.geographic === 0) {
+        console.error('❌ No raw data available - import may have failed');
+      } else if (filteredCounts.revenue + filteredCounts.customer + filteredCounts.performance + filteredCounts.geographic === 0) {
+        console.error('❌ Data exists but filters removed everything');
+      }
+    }
+    
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="flex h-screen">
@@ -114,7 +163,7 @@ function App() {
           {/* Python Panel Side */}
           <div className="w-1/2 bg-white">
             <PythonPanel
-              dashboardData={importState.hasData ? pythonData : []}
+              dashboardData={pythonData}
               onDataUpdate={(newData) => {
                 console.log('Python data updated:', newData);
               }}
