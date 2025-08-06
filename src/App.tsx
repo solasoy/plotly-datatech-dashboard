@@ -2,6 +2,9 @@ import { useState } from 'react';
 import PythonPanel from './components/python/PythonPanel';
 import ExcelImport from './components/data/ExcelImport';
 import DataTables from './components/data/DataTables';
+import { RevenueChartDemo } from './components/charts/RevenueChartDemo';
+import { ControlPanelDemo } from './components/controls/ControlPanelDemo';
+import { EnhancedStateDemo } from './components/controls/EnhancedStateDemo';
 import { useDashboard } from './hooks/useDashboard';
 import { ExcelDatasets } from './utils/excelImport';
 
@@ -15,6 +18,7 @@ function App() {
   const [showPython, setShowPython] = useState(false);
   const [showImport, setShowImport] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<'dashboard' | 'revenue-chart' | 'controls' | 'state-management'>('dashboard');
 
   const handleDataLoaded = (excelData: ExcelDatasets) => {
     loadData(excelData);
@@ -139,12 +143,56 @@ function App() {
                 </div>
               )}
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
+              {/* Navigation Tabs */}
+              <div className="flex items-center space-x-1 mr-4">
+                <button
+                  onClick={() => setCurrentView('dashboard')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'dashboard'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Dashboard
+                </button>
+                <button
+                  onClick={() => setCurrentView('revenue-chart')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'revenue-chart'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  📊 Revenue Chart
+                </button>
+                <button
+                  onClick={() => setCurrentView('controls')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'controls'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🎛️ Controls
+                </button>
+                <button
+                  onClick={() => setCurrentView('state-management')}
+                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    currentView === 'state-management'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🧠 State Demo
+                </button>
+              </div>
+              
               <button
                 onClick={() => setShowImport(true)}
                 className="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                📊 {importState.hasData ? 'Import New Data' : 'Import Data'}
+                📊 Import Data
               </button>
               <button
                 onClick={() => setShowPython(true)}
@@ -159,7 +207,14 @@ function App() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {!importState.hasData ? (
+        {/* Render different views based on currentView */}
+        {currentView === 'revenue-chart' ? (
+          <RevenueChartDemo />
+        ) : currentView === 'controls' ? (
+          <ControlPanelDemo />
+        ) : currentView === 'state-management' ? (
+          <EnhancedStateDemo />
+        ) : !importState.hasData ? (
           // No data state
           <div className="bg-white rounded-lg shadow-lg p-12 text-center">
             <div className="text-6xl mb-6">📊</div>
